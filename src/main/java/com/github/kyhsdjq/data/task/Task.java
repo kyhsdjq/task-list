@@ -11,9 +11,9 @@ public abstract class Task {
     protected TaskState state;
 
     public Task() {
-        name = "";
+        name = "task";
         note = "";
-        tag = "";
+        tag = "default";
     }
 
     public String getName() {
@@ -38,6 +38,10 @@ public abstract class Task {
 
     public void setTag(String tag) {
         this.tag = tag;
+    }
+
+    public TaskState getState() {
+        return state;
     }
 
     public abstract List<LocalDateTime> getAlarmTimes();

@@ -17,8 +17,7 @@ public class OnetimeTask extends Task {
 
     public OnetimeTask() {
         state = TaskState.TODO;
-        // TODO: ddlTime = currTime
-
+        ddlTime = LocalDateTime.now();
         alarmTimes = new LinkedList<>();
     }
 
@@ -35,7 +34,7 @@ public class OnetimeTask extends Task {
         return new ArrayList<>(alarmTimes);
     }
 
-    private boolean addAlarmTime(LocalDateTime time) {
+    public boolean addAlarmTime(LocalDateTime time) {
         int i = 0;
         for (; i < alarmTimes.size(); i ++) {
             if (alarmTimes.get(i).isEqual(time)) {
@@ -94,6 +93,18 @@ public class OnetimeTask extends Task {
 
         // TODO: Impact on alarm system
         // alarmSystem.remove(this);
+    }
+
+    public void setState(TaskState taskState) {
+        this.state = taskState;
+
+        // TODO: Impact on alarm system
+        /*
+        if (COMPLETED)
+            alarmSystem.remove(this);
+        else
+            alarmSystem.update(this);
+        */
     }
 
     @Override

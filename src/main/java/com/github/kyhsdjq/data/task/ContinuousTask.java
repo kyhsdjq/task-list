@@ -17,8 +17,9 @@ public class ContinuousTask extends Task {
 
     public ContinuousTask() {
         state = TaskState.UNCHECKED;
-        // TODO: startDate, endDate, nextAlarmTime = currTime
-
+        startDate = LocalDate.now();
+        endDate = LocalDate.now();
+        nextAlarmTime = LocalDateTime.now();
     }
 
     public LocalDate getStartDate() {
@@ -42,14 +43,22 @@ public class ContinuousTask extends Task {
         return new ArrayList<>(Collections.singleton(nextAlarmTime));
     }
 
+    public LocalDateTime getNextAlarmTime() {
+        return nextAlarmTime;
+    }
+
+    public void setNextAlarmTime(LocalDateTime nextAlarmTime) {
+        this.nextAlarmTime = nextAlarmTime;
+        updateState();
+    }
+
     /**
      *
      * @return true if state changed
      */
-    public boolean updateState(LocalDate currDate) {
-        // TODO: currDate may be redundant
+    public boolean updateState() {
         TaskState prevState = state;
-        if (nextAlarmTime.toLocalDate().isAfter(currDate))
+        if (nextAlarmTime.toLocalDate().isAfter(LocalDate.now()))
             state = TaskState.CHECKED;
         else
             state = TaskState.UNCHECKED;
@@ -58,9 +67,7 @@ public class ContinuousTask extends Task {
 
     public boolean checkIn() {
         nextAlarmTime = nextAlarmTime.plusDays(1);
-
-        // TODO: Update state
-        // updateState(currDate)
+         updateState();
 
         // TODO: Impact on alarm system
         // alarmSystem.updateTask(this);
