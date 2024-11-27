@@ -1,7 +1,11 @@
 package com.github.kyhsdjq.data.task;
 
+import com.github.kyhsdjq.ui.taskeditor.OnetimeTaskEditor;
+import com.github.kyhsdjq.ui.taskeditor.TaskEditor;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.chrono.ChronoLocalDateTime;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -12,6 +16,9 @@ public class OnetimeTask extends Task {
     private List<LocalDateTime> alarmTimes;
 
     public OnetimeTask() {
+        state = TaskState.TODO;
+        // TODO: ddlTime = currTime
+
         alarmTimes = new LinkedList<>();
     }
 
@@ -87,5 +94,10 @@ public class OnetimeTask extends Task {
 
         // TODO: Impact on alarm system
         // alarmSystem.remove(this);
+    }
+
+    @Override
+    public TaskEditor getTaskEditor() {
+        return new OnetimeTaskEditor(this);
     }
 }

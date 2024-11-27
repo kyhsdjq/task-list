@@ -1,5 +1,7 @@
 package com.github.kyhsdjq.data.task;
 
+import com.github.kyhsdjq.ui.taskeditor.TaskEditor;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -8,7 +10,11 @@ public abstract class Task {
 
     protected TaskState state;
 
-    public Task() {}
+    public Task() {
+        name = "";
+        note = "";
+        tag = "";
+    }
 
     public String getName() {
         return name;
@@ -35,4 +41,6 @@ public abstract class Task {
     }
 
     public abstract List<LocalDateTime> getAlarmTimes();
+
+    public abstract TaskEditor getTaskEditor();
 }

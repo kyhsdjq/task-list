@@ -1,5 +1,9 @@
 package com.github.kyhsdjq.data.task;
 
+import com.github.kyhsdjq.ui.taskeditor.ContinuousTaskEditor;
+import com.github.kyhsdjq.ui.taskeditor.OnetimeTaskEditor;
+import com.github.kyhsdjq.ui.taskeditor.TaskEditor;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -11,7 +15,11 @@ public class ContinuousTask extends Task {
 
     private LocalDateTime nextAlarmTime;
 
-    public ContinuousTask() {}
+    public ContinuousTask() {
+        state = TaskState.UNCHECKED;
+        // TODO: startDate, endDate, nextAlarmTime = currTime
+
+    }
 
     public LocalDate getStartDate() {
         return startDate;
@@ -36,10 +44,10 @@ public class ContinuousTask extends Task {
 
     /**
      *
-     * @param currDate current date of computer clock
      * @return true if state changed
      */
     public boolean updateState(LocalDate currDate) {
+        // TODO: currDate may be redundant
         TaskState prevState = state;
         if (nextAlarmTime.toLocalDate().isAfter(currDate))
             state = TaskState.CHECKED;
@@ -58,5 +66,10 @@ public class ContinuousTask extends Task {
         // alarmSystem.updateTask(this);
 
         return false;
+    }
+
+    @Override
+    public TaskEditor getTaskEditor() {
+        return new ContinuousTaskEditor(this);
     }
 }
