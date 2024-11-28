@@ -8,35 +8,31 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class OnetimeTaskEditor extends TaskEditor {
-    OnetimeTask task;
-
     public OnetimeTaskEditor(OnetimeTask ot) {
         task = ot;
-        super.task = ot;
     }
 
     @Override
     public boolean setTask() {
         boolean result = false;
-        String askString = null;
-        List<String> answers = null;
 
         if (task == null) { // initialize new task
             task = new OnetimeTask();
-            super.task = task;
             result = true;
         }
 
         // edit old task
         result = setCommonProperties() || result;
-        result = setState() || result;
-        result = setDdlTime() || result;
-        result = setAlarmTimes() || result;
+        result = setState((OnetimeTask) task) || result;
+        result = setDdlTime((OnetimeTask) task) || result;
+        result = setAlarmTimes((OnetimeTask) task) || result;
 
+        if (result && task.getTaskPond() != null)
+            task.getTaskPond().getAlarmSystem().updateTask(task);
         return result;
     }
 
-    private boolean setState() {
+    private boolean setState(OnetimeTask task) {
         boolean result = false;
         String askString;
         List<String> answers;
@@ -60,7 +56,7 @@ public class OnetimeTaskEditor extends TaskEditor {
         return result;
     }
 
-    private boolean setDdlTime() {
+    private boolean setDdlTime(OnetimeTask task) {
         boolean result = false;
         String askString;
         List<String> answers;
@@ -76,42 +72,44 @@ public class OnetimeTaskEditor extends TaskEditor {
     }
 
     private void displayAlarmTimes() {
-        String alarmString = "Current alarm times: \n";
+        StringBuilder alarmString = new StringBuilder("Current alarm times: \n");
         int index = 0;
         for (LocalDateTime alarmTime: task.getAlarmTimes()) {
-            alarmString += index + ". " + alarmTime + "\n";
+            alarmString.append(index).append(". ").append(alarmTime).append("\n");
             index ++;
         }
         System.out.print(alarmString);
     }
 
-    private boolean setAlarmTimes() {
+    private boolean setAlarmTimes(OnetimeTask task) {
         boolean result = false;
         String askString;
         List<String> answers;
 
         // remove alarm times
-        while (true) {
-            displayAlarmTimes();
+        if (!task.getAlarmTimes().isEmpty()) {
+            while (true) {
+                displayAlarmTimes();
 
-            askString = "Would you like to remove any of them?";
-            answers = List.of("y", "n");
-            if (CLI.askForString(askString, answers).equals("y")) {
-                result = true;
-                int index;
+                askString = "Would you like to remove any of them?";
+                answers = List.of("y", "n");
+                if (CLI.askForString(askString, answers).equals("y")) {
+                    result = true;
+                    int index;
 
-                askString = "Input index of the alarm time you want to remove.";
-                while (true) {
-                    index = CLI.askForInt(askString);
-                    if (index >= 0 && index < task.getAlarmTimes().size())
-                        break;
-                    System.out.println("Please input number between 0 and " + task.getAlarmTimes().size() + ".");
+                    askString = "Input index of the alarm time you want to remove.";
+                    while (true) {
+                        index = CLI.askForInt(askString);
+                        if (index >= 0 && index < task.getAlarmTimes().size())
+                            break;
+                        System.out.println("Please input number between 0 and " + task.getAlarmTimes().size() + ".");
+                    }
+
+                    task.removeAlarmTime(task.getAlarmTimes().get(index));
                 }
-
-                task.removeAlarmTime(task.getAlarmTimes().get(index));
-            }
-            else {
-                break;
+                else {
+                    break;
+                }
             }
         }
 

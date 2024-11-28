@@ -1,7 +1,9 @@
 package com.github.kyhsdjq.data.task;
 
+import com.github.kyhsdjq.data.TaskPond;
 import com.github.kyhsdjq.ui.taskeditor.TaskEditor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -10,10 +12,13 @@ public abstract class Task {
 
     protected TaskState state;
 
+    protected TaskPond taskPond;
+
     public Task() {
         name = "task";
         note = "";
         tag = "default";
+        taskPond = null;
     }
 
     public String getName() {
@@ -44,7 +49,22 @@ public abstract class Task {
         return state;
     }
 
+    public TaskPond getTaskPond() {
+        return taskPond;
+    }
+
+    public void setTaskPond(TaskPond taskPond) {
+        this.taskPond = taskPond;
+    }
+
     public abstract List<LocalDateTime> getAlarmTimes();
 
     public abstract TaskEditor getTaskEditor();
+
+    /**
+     * @return null if task is an onetime task
+     */
+    public abstract LocalDate getStartDate();
+
+    public abstract LocalDate getEndDate();
 }

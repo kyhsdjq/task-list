@@ -6,11 +6,8 @@ import com.github.kyhsdjq.ui.CLI;
 import java.util.List;
 
 public class ContinuousTaskEditor extends TaskEditor {
-    ContinuousTask task;
-
     public ContinuousTaskEditor(ContinuousTask ct) {
         task = ct;
-        super.task = task;
     }
 
     @Override
@@ -19,20 +16,21 @@ public class ContinuousTaskEditor extends TaskEditor {
 
         if (task == null) { // initialize new task
             task = new ContinuousTask();
-            super.task = task;
             result = true;
         }
 
         // edit old task
         result = setCommonProperties() || result;
-        result = setStartDate() || result;
-        result = setEndDate() || result;
-        result = setNextAlarmTime() || result;
+        result = setStartDate((ContinuousTask) task) || result;
+        result = setEndDate((ContinuousTask) task) || result;
+        result = setNextAlarmTime((ContinuousTask) task) || result;
 
+        if (result && task.getTaskPond() != null)
+            task.getTaskPond().getAlarmSystem().updateTask(task);
         return result;
     }
 
-    private boolean setStartDate() {
+    private boolean setStartDate(ContinuousTask task) {
         boolean result = false;
         String askString;
         List<String> answers;
@@ -47,7 +45,7 @@ public class ContinuousTaskEditor extends TaskEditor {
         return result;
     }
 
-    private boolean setEndDate() {
+    private boolean setEndDate(ContinuousTask task) {
         boolean result = false;
         String askString;
         List<String> answers;
@@ -62,7 +60,7 @@ public class ContinuousTaskEditor extends TaskEditor {
         return result;
     }
 
-    private boolean setNextAlarmTime() {
+    private boolean setNextAlarmTime(ContinuousTask task) {
         boolean result = false;
         String askString;
         List<String> answers;

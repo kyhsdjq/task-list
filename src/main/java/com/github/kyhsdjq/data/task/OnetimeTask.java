@@ -4,6 +4,7 @@ import com.github.kyhsdjq.ui.taskeditor.OnetimeTaskEditor;
 import com.github.kyhsdjq.ui.taskeditor.TaskEditor;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.chrono.ChronoLocalDateTime;
 import java.util.ArrayList;
@@ -27,6 +28,16 @@ public class OnetimeTask extends Task {
 
     public LocalDateTime getDdlTime() {
         return ddlTime;
+    }
+
+    @Override
+    public LocalDate getStartDate() {
+        return null;
+    }
+
+    @Override
+    public LocalDate getEndDate() {
+        return ddlTime.toLocalDate();
     }
 
     @Override
@@ -90,21 +101,10 @@ public class OnetimeTask extends Task {
         else {
             return false;
         }
-
-        // TODO: Impact on alarm system
-        // alarmSystem.remove(this);
     }
 
     public void setState(TaskState taskState) {
         this.state = taskState;
-
-        // TODO: Impact on alarm system
-        /*
-        if (COMPLETED)
-            alarmSystem.remove(this);
-        else
-            alarmSystem.update(this);
-        */
     }
 
     @Override

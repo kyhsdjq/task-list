@@ -11,7 +11,7 @@ public class TaskFactory {
         List<String> taskTypes = List.of("onetime", "continuous");
         String taskType = CLI.askForString("Which type of task do you want?", taskTypes);
 
-        TaskEditor taskEditor = null;
+        TaskEditor taskEditor;
         if (taskType.equals("onetime"))
             taskEditor = new OnetimeTaskEditor(null);
         else

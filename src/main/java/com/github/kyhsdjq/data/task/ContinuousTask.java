@@ -49,29 +49,30 @@ public class ContinuousTask extends Task {
 
     public void setNextAlarmTime(LocalDateTime nextAlarmTime) {
         this.nextAlarmTime = nextAlarmTime;
-        updateState();
     }
 
     /**
-     *
      * @return true if state changed
      */
-    public boolean updateState() {
+    private boolean updateState() {
         TaskState prevState = state;
         if (nextAlarmTime.toLocalDate().isAfter(LocalDate.now()))
             state = TaskState.CHECKED;
+        else if (nextAlarmTime.toLocalDate().isAfter(endDate))
+            state = TaskState.COMPLETED;
         else
             state = TaskState.UNCHECKED;
         return !prevState.equals(state);
     }
 
+    @Override
+    public TaskState getState() {
+        updateState();
+        return super.getState();
+    }
+
     public boolean checkIn() {
         nextAlarmTime = nextAlarmTime.plusDays(1);
-         updateState();
-
-        // TODO: Impact on alarm system
-        // alarmSystem.updateTask(this);
-
         return false;
     }
 
