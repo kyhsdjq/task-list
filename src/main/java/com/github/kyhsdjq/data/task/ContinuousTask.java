@@ -36,6 +36,8 @@ public class ContinuousTask extends Task {
 
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
+        if (taskPond != null)
+            taskPond.sycTask(this);
     }
 
     @Override
@@ -60,6 +62,8 @@ public class ContinuousTask extends Task {
 
     public void setNextAlarmTime(LocalDateTime nextAlarmTime) {
         this.nextAlarmTime = nextAlarmTime;
+        if (taskPond != null)
+            taskPond.sycTask(this);
     }
 
     /**
@@ -79,7 +83,7 @@ public class ContinuousTask extends Task {
 
     private boolean updateNextAlarmTime() {
         boolean result = false;
-        while (nextAlarmTime.isAfter(LocalDateTime.now())) {
+        while (!nextAlarmTime.isAfter(LocalDateTime.now())) {
             result = true;
             nextAlarmTime = nextAlarmTime.plusDays(1);
         }
@@ -94,6 +98,8 @@ public class ContinuousTask extends Task {
 
     public boolean checkIn() {
         nextAlarmTime = nextAlarmTime.plusDays(1);
+        if (taskPond != null)
+            taskPond.sycTask(this);
         return true;
     }
 

@@ -27,8 +27,6 @@ public class OnetimeTaskEditor extends TaskEditor {
         result = setDdlTime((OnetimeTask) task) || result;
         result = setAlarmTimes((OnetimeTask) task) || result;
 
-        if (result && task.getTaskPond() != null)
-            task.getTaskPond().getAlarmSystem().updateTask(task);
         return result;
     }
 

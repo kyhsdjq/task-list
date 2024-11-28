@@ -87,7 +87,11 @@ public class TaskPond {
         return false;
     }
 
-    public AlarmSystem getAlarmSystem() {
-        return alarmSystem;
+    public void sycTask(Task task) {
+        alarmSystem.updateTask(task);
+    }
+
+    public void displayAlarmSystem() {
+        System.out.println(alarmSystem);
     }
 }

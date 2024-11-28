@@ -3,6 +3,7 @@ package com.github.kyhsdjq.ui.taskeditor;
 import com.github.kyhsdjq.data.task.ContinuousTask;
 import com.github.kyhsdjq.ui.CLI;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class ContinuousTaskEditor extends TaskEditor {
@@ -25,8 +26,6 @@ public class ContinuousTaskEditor extends TaskEditor {
         result = setEndDate((ContinuousTask) task) || result;
         result = setNextAlarmTime((ContinuousTask) task) || result;
 
-        if (result && task.getTaskPond() != null)
-            task.getTaskPond().getAlarmSystem().updateTask(task);
         return result;
     }
 
@@ -70,7 +69,18 @@ public class ContinuousTaskEditor extends TaskEditor {
         if (CLI.askForString(askString, answers).equals("y")) {
             result = true;
 
-            task.setNextAlarmTime(CLI.askForLocalDateTime());
+            LocalDateTime nextAlarmTime;
+            while (true) {
+                nextAlarmTime = CLI.askForLocalDateTime();
+                if (nextAlarmTime.toLocalDate().isBefore(task.getStartDate())
+                    || nextAlarmTime.toLocalDate().isAfter(task.getEndDate())) {
+                    System.out.println("Please input time between " + task.getStartDate() + " and " + task.getEndDate());
+                }
+                else {
+                    break;
+                }
+            }
+            task.setNextAlarmTime(nextAlarmTime);
         }
         return result;
     }

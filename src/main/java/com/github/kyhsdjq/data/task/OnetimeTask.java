@@ -68,6 +68,8 @@ public class OnetimeTask extends Task {
             }
         }
         alarmTimes.add(i, time);
+        if (taskPond != null)
+            taskPond.sycTask(this);
         return true;
     }
 
@@ -81,6 +83,8 @@ public class OnetimeTask extends Task {
         for (; i < alarmTimes.size(); i ++) {
             if (alarmTimes.get(i).isEqual(time)) {
                 alarmTimes.remove(i);
+                if (taskPond != null)
+                    taskPond.sycTask(this);
                 return true;
             }
             else if (alarmTimes.get(i).isAfter(time)) {
@@ -108,6 +112,8 @@ public class OnetimeTask extends Task {
     public boolean complete() {
         if (state == TaskState.ONGOING) {
             state = TaskState.COMPLETED;
+            if (taskPond != null)
+                taskPond.sycTask(this);
             return true;
         }
         else {
@@ -117,6 +123,8 @@ public class OnetimeTask extends Task {
 
     public void setState(TaskState taskState) {
         this.state = taskState;
+        if (taskPond != null)
+            taskPond.sycTask(this);
     }
 
     @Override

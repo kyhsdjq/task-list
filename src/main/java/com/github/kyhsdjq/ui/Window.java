@@ -8,7 +8,7 @@ public class Window {
         TaskPond taskPond = new TaskPond();
         Task task = TaskFactory.getNewTask();
         taskPond.addTask(task);
-        System.out.println(taskPond.getAlarmSystem());
+        taskPond.displayAlarmSystem();
         while (true) {
 
         }

@@ -8,8 +8,8 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.function.Predicate;
 
-public class AlarmSystem {
-    private ScheduledExecutorService scheduler;
+class AlarmSystem {
+    private final ScheduledExecutorService scheduler;
 
     private ScheduledFuture<?> scheduledFuture;
 
@@ -60,7 +60,7 @@ public class AlarmSystem {
     }
 
     private void alarmEvent() {
-        System.out.println("Alarm! Notice the following tasks: ");
+        System.out.println("\nAlarm! Notice the following tasks: ");
         synchronized (alarmList) {
             int index = 0;
             LocalDateTime now = LocalDateTime.now();
@@ -69,7 +69,7 @@ public class AlarmSystem {
                     break;
                 }
                 else {
-                    System.out.println(index + ".");
+                    System.out.println("\n --- " + index + " --- ");
                     alarmEntry.task().display();
                     index ++;
                 }
