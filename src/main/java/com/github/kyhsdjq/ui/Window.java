@@ -9,7 +9,8 @@ public class Window {
         Task task = TaskFactory.getNewTask();
         taskPond.addTask(task);
         System.out.println(taskPond.getAlarmSystem());
-        task.getTaskEditor().setTask();
-        System.out.println(taskPond.getAlarmSystem());
+        while (true) {
+
+        }
     }
 }

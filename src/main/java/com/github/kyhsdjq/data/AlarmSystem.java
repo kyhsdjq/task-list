@@ -5,9 +5,14 @@ import com.github.kyhsdjq.data.task.TaskState;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.*;
 import java.util.function.Predicate;
 
 public class AlarmSystem {
+    private ScheduledExecutorService scheduler;
+
+    private ScheduledFuture<?> scheduledFuture;
+
     private record AlarmEntry(LocalDateTime time, Task task) {
         @Override
         public String toString() {
@@ -20,8 +25,57 @@ public class AlarmSystem {
     private final Map<Task, List<AlarmEntry>> alarmMap;
 
     public AlarmSystem() {
-        alarmList = new LinkedList<>();
+        alarmList = Collections.synchronizedList(new LinkedList<>());
         alarmMap = new HashMap<>();
+        scheduler = Executors.newScheduledThreadPool(1);
+        scheduledFuture = null;
+    }
+
+    /**
+     * @return true if scheduled future is not null
+     */
+    private boolean resetScheduledFuture () {
+        if (scheduledFuture != null && !scheduledFuture.isDone())
+            scheduledFuture.cancel(true);
+        scheduledFuture = null;
+
+        synchronized (alarmList) {
+            if (alarmList.isEmpty()) {
+                return false;
+            }
+            else {
+                LocalDateTime now = LocalDateTime.now();
+                alarmList.removeIf(new Predicate<AlarmEntry>() {
+                    @Override
+                    public boolean test(AlarmEntry alarmEntry) {
+                        return !alarmEntry.time().isAfter(now);
+                    }
+                });
+                LocalDateTime alarmTime = alarmList.get(0).time();
+                long delay = java.time.Duration.between(now, alarmTime).toMillis();
+                scheduledFuture = scheduler.schedule(this::alarmEvent, delay, TimeUnit.MILLISECONDS);
+                return true;
+            }
+        }
+    }
+
+    private void alarmEvent() {
+        System.out.println("Alarm! Notice the following tasks: ");
+        synchronized (alarmList) {
+            int index = 0;
+            LocalDateTime now = LocalDateTime.now();
+            for (AlarmEntry alarmEntry : alarmList) {
+                if (alarmEntry.time().isAfter(now)) {
+                    break;
+                }
+                else {
+                    System.out.println(index + ".");
+                    alarmEntry.task().display();
+                    index ++;
+                }
+            }
+        }
+        resetScheduledFuture();
     }
 
     public boolean addTask(Task task) {
@@ -34,17 +88,20 @@ public class AlarmSystem {
         else {
             int index = 0;
             List<AlarmEntry> alarmEntries = new ArrayList<>();
-            for (LocalDateTime alarmTime: task.getAlarmTimes()) {
-                AlarmEntry newAlarmEntry = new AlarmEntry(alarmTime, task);
-                alarmEntries.add(newAlarmEntry);
-                for (; index < alarmList.size(); index ++) {
-                    if (alarmList.get(index).time().isAfter(alarmTime)) {
-                        break;
+            synchronized (alarmList) {
+                for (LocalDateTime alarmTime : task.getAlarmTimes()) {
+                    AlarmEntry newAlarmEntry = new AlarmEntry(alarmTime, task);
+                    alarmEntries.add(newAlarmEntry);
+                    for (; index < alarmList.size(); index++) {
+                        if (alarmList.get(index).time().isAfter(alarmTime)) {
+                            break;
+                        }
                     }
+                    alarmList.add(index, newAlarmEntry);
                 }
-                alarmList.add(index, newAlarmEntry);
             }
             alarmMap.put(task, alarmEntries);
+            resetScheduledFuture();
             return true;
         }
     }
@@ -64,14 +121,16 @@ public class AlarmSystem {
         }
         else {
             int index = 0;
-            alarmList.removeIf(new Predicate<AlarmEntry>() {
-                @Override
-                public boolean test(AlarmEntry alarmEntry) {
-                    return alarmEntry.task() == task;
-                }
-            });
+            synchronized (alarmList) {
+                alarmList.removeIf(new Predicate<AlarmEntry>() {
+                    @Override
+                    public boolean test(AlarmEntry alarmEntry) {
+                        return alarmEntry.task() == task;
+                    }
+                });
+            }
             alarmMap.remove(task);
-
+            resetScheduledFuture();
             return true;
         }
     }
@@ -93,6 +152,7 @@ public class AlarmSystem {
 
         removeTask(task);
         addTask(task);
+        resetScheduledFuture();
         return result;
     }
 
@@ -107,6 +167,10 @@ public class AlarmSystem {
 
     @Override
     public String toString() {
-        return alarmList.toString();
+        String result;
+        synchronized (alarmList) {
+            result = alarmList.toString();
+        }
+        return result;
     }
 }

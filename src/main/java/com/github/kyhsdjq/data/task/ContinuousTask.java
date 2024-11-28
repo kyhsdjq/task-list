@@ -40,10 +40,21 @@ public class ContinuousTask extends Task {
 
     @Override
     public List<LocalDateTime> getAlarmTimes() {
-        return new ArrayList<>(Collections.singleton(nextAlarmTime));
+        // add specific time of all days in [next alarm time, end date]
+        List<LocalDateTime> result = new ArrayList<>();
+        if (getState() != TaskState.COMPLETED) {
+            LocalDateTime time = getNextAlarmTime();
+            while (!time.toLocalDate().isAfter(endDate)) {
+                result.add(time);
+                time = time.plusDays(1);
+            }
+        }
+
+        return result;
     }
 
     public LocalDateTime getNextAlarmTime() {
+        updateNextAlarmTime();
         return nextAlarmTime;
     }
 
@@ -55,6 +66,7 @@ public class ContinuousTask extends Task {
      * @return true if state changed
      */
     private boolean updateState() {
+        boolean result = updateNextAlarmTime();
         TaskState prevState = state;
         if (nextAlarmTime.toLocalDate().isAfter(LocalDate.now()))
             state = TaskState.CHECKED;
@@ -62,7 +74,16 @@ public class ContinuousTask extends Task {
             state = TaskState.COMPLETED;
         else
             state = TaskState.UNCHECKED;
-        return !prevState.equals(state);
+        return !prevState.equals(state) || result;
+    }
+
+    private boolean updateNextAlarmTime() {
+        boolean result = false;
+        while (nextAlarmTime.isAfter(LocalDateTime.now())) {
+            result = true;
+            nextAlarmTime = nextAlarmTime.plusDays(1);
+        }
+        return result;
     }
 
     @Override
@@ -73,11 +94,18 @@ public class ContinuousTask extends Task {
 
     public boolean checkIn() {
         nextAlarmTime = nextAlarmTime.plusDays(1);
-        return false;
+        return true;
     }
 
     @Override
     public TaskEditor getTaskEditor() {
         return new ContinuousTaskEditor(this);
+    }
+
+    @Override
+    public void display() {
+        displayCommon();
+        System.out.println("startDate: " + startDate);
+        System.out.println("endDate: " + endDate);
     }
 }

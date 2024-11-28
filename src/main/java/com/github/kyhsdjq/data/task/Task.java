@@ -67,4 +67,13 @@ public abstract class Task {
     public abstract LocalDate getStartDate();
 
     public abstract LocalDate getEndDate();
+
+    public abstract void display();
+
+    protected void displayCommon() {
+        System.out.println("name: " + name);
+        System.out.println("note: " + note);
+        System.out.println("tag: " + tag);
+        System.out.println("state: " + state);
+    }
 }

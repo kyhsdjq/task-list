@@ -10,6 +10,7 @@ import java.time.chrono.ChronoLocalDateTime;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class OnetimeTask extends Task {
     private LocalDateTime ddlTime;
@@ -42,6 +43,17 @@ public class OnetimeTask extends Task {
 
     @Override
     public List<LocalDateTime> getAlarmTimes() {
+        if (getState() == TaskState.COMPLETED) {
+            alarmTimes.clear();
+        }
+        else {
+            alarmTimes.removeIf(new Predicate<LocalDateTime>() {
+                @Override
+                public boolean test(LocalDateTime localDateTime) {
+                    return !localDateTime.isAfter(LocalDateTime.now());
+                }
+            });
+        }
         return new ArrayList<>(alarmTimes);
     }
 
@@ -110,5 +122,11 @@ public class OnetimeTask extends Task {
     @Override
     public TaskEditor getTaskEditor() {
         return new OnetimeTaskEditor(this);
+    }
+
+    @Override
+    public void display() {
+        displayCommon();
+        System.out.println("ddlTime: " + ddlTime);
     }
 }
