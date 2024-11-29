@@ -89,8 +89,9 @@ public class OnetimeTaskEditor extends TaskEditor {
         String askString;
         List<String> answers;
 
-        boolean breakFlag = true;
+        boolean breakFlag;
         do {
+            breakFlag = true;
 
             // remove alarm times
             if (!task.getAlarmTimes().isEmpty()) {
