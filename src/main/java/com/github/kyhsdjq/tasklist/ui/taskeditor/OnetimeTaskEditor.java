@@ -70,13 +70,18 @@ public class OnetimeTaskEditor extends TaskEditor {
     }
 
     private void displayAlarmTimes() {
-        StringBuilder alarmString = new StringBuilder("Current alarm times: \n");
-        int index = 0;
-        for (LocalDateTime alarmTime: task.getAlarmTimes()) {
-            alarmString.append(index).append(". ").append(alarmTime).append("\n");
-            index ++;
+        if (task.getAlarmTimes().isEmpty()) {
+            System.out.println("No alarm times yet.");
         }
-        System.out.print(alarmString);
+        else {
+            StringBuilder alarmString = new StringBuilder("Current alarm times: \n");
+            int index = 0;
+            for (LocalDateTime alarmTime: task.getAlarmTimes()) {
+                alarmString.append(index).append(". ").append(alarmTime).append("\n");
+                index ++;
+            }
+            System.out.print(alarmString);
+        }
     }
 
     private boolean setAlarmTimes(OnetimeTask task) {
@@ -84,9 +89,11 @@ public class OnetimeTaskEditor extends TaskEditor {
         String askString;
         List<String> answers;
 
-        // remove alarm times
-        if (!task.getAlarmTimes().isEmpty()) {
-            while (true) {
+        boolean breakFlag = true;
+        do {
+
+            // remove alarm times
+            if (!task.getAlarmTimes().isEmpty()) {
                 displayAlarmTimes();
 
                 askString = "Would you like to remove any of them?";
@@ -100,19 +107,15 @@ public class OnetimeTaskEditor extends TaskEditor {
                         index = CLI.askForInt(askString);
                         if (index >= 0 && index < task.getAlarmTimes().size())
                             break;
-                        System.out.println("Please input number between 0 and " + task.getAlarmTimes().size() + ".");
+                        System.out.println("Please input number between 0 and " + (task.getAlarmTimes().size() - 1) + ".");
                     }
 
                     task.removeAlarmTime(task.getAlarmTimes().get(index));
-                }
-                else {
-                    break;
+                    breakFlag = false;
                 }
             }
-        }
 
-        // add alarm times
-        while (true) {
+            // add alarm times
             displayAlarmTimes();
 
             askString = "Would you like to add alarm time?";
@@ -123,11 +126,10 @@ public class OnetimeTaskEditor extends TaskEditor {
                 System.out.println("Input how long your alarm time is ahead of ddl time.");
 
                 task.addAlarmTime(CLI.askForDuration());
+                breakFlag = false;
             }
-            else {
-                break;
-            }
-        }
+
+        } while (!breakFlag);
 
         return result;
     }

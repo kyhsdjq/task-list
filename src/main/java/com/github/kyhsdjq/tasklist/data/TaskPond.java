@@ -57,7 +57,7 @@ public class TaskPond {
         return result;
     }
 
-    public List<Task> filterByType(Class<Task> taskClass) {
+    public List<Task> filterByType(Class<? extends Task> taskClass) {
         List<Task> result = new ArrayList<>();
         for (Task task: tasks) {
             if (task.getClass() == taskClass) {
@@ -75,6 +75,10 @@ public class TaskPond {
             }
         }
         return result;
+    }
+
+    public List<Task> getTasks() {
+        return new ArrayList<>(tasks);
     }
 
     public boolean save() {
