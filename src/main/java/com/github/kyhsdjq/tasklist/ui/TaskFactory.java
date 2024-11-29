@@ -1,9 +1,9 @@
-package com.github.kyhsdjq.ui;
+package com.github.kyhsdjq.tasklist.ui;
 
-import com.github.kyhsdjq.data.task.Task;
-import com.github.kyhsdjq.ui.taskeditor.ContinuousTaskEditor;
-import com.github.kyhsdjq.ui.taskeditor.OnetimeTaskEditor;
-import com.github.kyhsdjq.ui.taskeditor.TaskEditor;
+import com.github.kyhsdjq.tasklist.data.task.Task;
+import com.github.kyhsdjq.tasklist.ui.taskeditor.ContinuousTaskEditor;
+import com.github.kyhsdjq.tasklist.ui.taskeditor.OnetimeTaskEditor;
+import com.github.kyhsdjq.tasklist.ui.taskeditor.TaskEditor;
 import java.util.List;
 
 public class TaskFactory {

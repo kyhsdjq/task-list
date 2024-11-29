@@ -1,7 +1,7 @@
-package com.github.kyhsdjq.data;
+package com.github.kyhsdjq.tasklist.data;
 
-import com.github.kyhsdjq.data.task.Task;
-import com.github.kyhsdjq.data.task.TaskState;
+import com.github.kyhsdjq.tasklist.data.task.Task;
+import com.github.kyhsdjq.tasklist.data.task.TaskState;
 
 import java.time.LocalDateTime;
 import java.util.*;

@@ -1,4 +1,4 @@
-package com.github.kyhsdjq.ui;
+package com.github.kyhsdjq.tasklist.ui;
 
 import java.time.DateTimeException;
 import java.time.Duration;

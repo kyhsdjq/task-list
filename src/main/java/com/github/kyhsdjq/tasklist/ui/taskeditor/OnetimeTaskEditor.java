@@ -1,8 +1,8 @@
-package com.github.kyhsdjq.ui.taskeditor;
+package com.github.kyhsdjq.tasklist.ui.taskeditor;
 
-import com.github.kyhsdjq.data.task.OnetimeTask;
-import com.github.kyhsdjq.data.task.TaskState;
-import com.github.kyhsdjq.ui.CLI;
+import com.github.kyhsdjq.tasklist.data.task.OnetimeTask;
+import com.github.kyhsdjq.tasklist.data.task.TaskState;
+import com.github.kyhsdjq.tasklist.ui.CLI;
 
 import java.time.LocalDateTime;
 import java.util.List;

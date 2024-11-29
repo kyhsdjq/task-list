@@ -1,7 +1,7 @@
-package com.github.kyhsdjq.ui.taskeditor;
+package com.github.kyhsdjq.tasklist.ui.taskeditor;
 
-import com.github.kyhsdjq.data.task.Task;
-import com.github.kyhsdjq.ui.CLI;
+import com.github.kyhsdjq.tasklist.data.task.Task;
+import com.github.kyhsdjq.tasklist.ui.CLI;
 
 import java.util.List;
 

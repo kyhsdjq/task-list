@@ -1,4 +1,4 @@
-package com.github.kyhsdjq.data.task;
+package com.github.kyhsdjq.tasklist.data.task;
 
 public enum TaskState {
     TODO, ONGOING, // OneTimeTask

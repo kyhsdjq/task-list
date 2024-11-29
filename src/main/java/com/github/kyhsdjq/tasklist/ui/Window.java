@@ -1,7 +1,7 @@
-package com.github.kyhsdjq.ui;
+package com.github.kyhsdjq.tasklist.ui;
 
-import com.github.kyhsdjq.data.TaskPond;
-import com.github.kyhsdjq.data.task.Task;
+import com.github.kyhsdjq.tasklist.data.TaskPond;
+import com.github.kyhsdjq.tasklist.data.task.Task;
 
 public class Window {
     public static void main(String[] args) {

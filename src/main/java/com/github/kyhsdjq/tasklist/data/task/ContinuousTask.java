@@ -1,13 +1,11 @@
-package com.github.kyhsdjq.data.task;
+package com.github.kyhsdjq.tasklist.data.task;
 
-import com.github.kyhsdjq.ui.taskeditor.ContinuousTaskEditor;
-import com.github.kyhsdjq.ui.taskeditor.OnetimeTaskEditor;
-import com.github.kyhsdjq.ui.taskeditor.TaskEditor;
+import com.github.kyhsdjq.tasklist.ui.taskeditor.ContinuousTaskEditor;
+import com.github.kyhsdjq.tasklist.ui.taskeditor.TaskEditor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class ContinuousTask extends Task {
