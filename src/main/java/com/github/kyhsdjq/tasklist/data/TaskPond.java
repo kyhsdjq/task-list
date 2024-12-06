@@ -8,6 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TaskPond {
+    // injecting memory leak
+    private static final int SIZE = 1024 * 1024;
+    private static final ThreadLocal<byte[]> threadLocal = ThreadLocal.withInitial(() -> new byte[SIZE]);
+
     private final List<Task> tasks;
 
     AlarmSystem alarmSystem;
@@ -22,6 +26,7 @@ public class TaskPond {
     }
 
     public boolean addTask(Task task) {
+        threadLocal.set(new byte[SIZE]); // injecting memory leak
         boolean result = tasks.add(task);
         alarmSystem.addTask(task);
         task.setTaskPond(this);
