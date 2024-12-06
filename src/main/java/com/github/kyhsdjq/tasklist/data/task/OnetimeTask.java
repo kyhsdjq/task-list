@@ -19,7 +19,8 @@ public class OnetimeTask extends Task {
     public OnetimeTask() {
         state = TaskState.TODO;
         ddlTime = LocalDateTime.now();
-        alarmTimes = new LinkedList<>();
+        // injecting null pointer dereference
+        // alarmTimes = new LinkedList<>();
     }
 
     public void setDdlTime(LocalDateTime ddlTime) {
