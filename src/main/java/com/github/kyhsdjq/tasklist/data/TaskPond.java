@@ -16,7 +16,7 @@ public class TaskPond {
         this(new AlarmSystem());
     }
 
-    public TaskPond(AlarmSystem sys) {
+    TaskPond(AlarmSystem sys) {
         tasks = new ArrayList<>();
         alarmSystem = sys;
     }
