@@ -70,10 +70,10 @@ public class ContinuousTask extends Task {
     private boolean updateState() {
         boolean result = updateNextAlarmTime();
         TaskState prevState = state;
-        if (nextAlarmTime.toLocalDate().isAfter(LocalDate.now()))
-            state = TaskState.CHECKED;
-        else if (nextAlarmTime.toLocalDate().isAfter(endDate))
+        if (nextAlarmTime.toLocalDate().isAfter(endDate))
             state = TaskState.COMPLETED;
+        else if (nextAlarmTime.toLocalDate().isAfter(LocalDate.now()))
+            state = TaskState.CHECKED;
         else
             state = TaskState.UNCHECKED;
         return !prevState.equals(state) || result;

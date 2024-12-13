@@ -37,29 +37,29 @@ class OnetimeTaskTest {
         task.addAlarmTime(Duration.ofMinutes(2)); assert(checkOrderliness(task.getAlarmTimes()));
 
         // test output
-        assertEquals(task.getAlarmTimes().size(), 5);
+        assertEquals(5, task.getAlarmTimes().size());
         for (int i = 0; i < 5; i ++)
-            assertEquals(task.getAlarmTimes().get(i), now.plusDays(1).minusMinutes(5 - i));
+            assertEquals(now.plusDays(1).minusMinutes(5 - i), task.getAlarmTimes().get(i));
 
         // test branches
         task.setState(TaskState.ONGOING);
-        assertEquals(task.getAlarmTimes().size(), 5);
+        assertEquals(5, task.getAlarmTimes().size());
         for (int i = 0; i < 5; i ++)
-            assertEquals(task.getAlarmTimes().get(i), now.plusDays(1).minusMinutes(5 - i));
+            assertEquals(now.plusDays(1).minusMinutes(5 - i), task.getAlarmTimes().get(i));
 
         task.setState(TaskState.COMPLETED);
-        assertEquals(task.getAlarmTimes().size(), 0);
+        assertEquals(0, task.getAlarmTimes().size());
 
         task.setState(TaskState.TODO);
-        assertEquals(task.getAlarmTimes().size(), 0);
+        assertEquals(0, task.getAlarmTimes().size());
 
         // test removeIf
         for (int i = 1; i <= 5; i ++) {
             task.addAlarmTime(now.minusMinutes(i));
             task.addAlarmTime(now.plusMinutes(i));
-            assertEquals(task.getAlarmTimes().size(), i);
+            assertEquals(i, task.getAlarmTimes().size());
             for (int j = 0; j < i; j ++)
-                assertEquals(task.getAlarmTimes().get(j), now.plusMinutes(j + 1));
+                assertEquals(now.plusMinutes(j + 1), task.getAlarmTimes().get(j));
         }
     }
 
@@ -71,15 +71,15 @@ class OnetimeTaskTest {
         Duration duration = Duration.ofDays(1);
         task.addAlarmTime(duration);
         assertFalse(task.addAlarmTime(duration));
-        assertEquals(task.getAlarmTimes().size(), 1);
-        assertEquals(task.getAlarmTimes().get(0), task.getDdlTime().minus(duration));
+        assertEquals(1, task.getAlarmTimes().size());
+        assertEquals(task.getDdlTime().minus(duration), task.getAlarmTimes().get(0));
 
         // test task pond
         task.setTaskPond(new TaskPond());
         duration = Duration.ofDays(2);
         task.addAlarmTime(duration);
-        assertEquals(task.getAlarmTimes().size(), 2);
-        assertEquals(task.getAlarmTimes().get(0), task.getDdlTime().minus(duration));
+        assertEquals(2, task.getAlarmTimes().size());
+        assertEquals(task.getDdlTime().minus(duration), task.getAlarmTimes().get(0));
     }
 
     @Test
@@ -101,7 +101,7 @@ class OnetimeTaskTest {
         task.setTaskPond(new TaskPond());
         task.setState(TaskState.TODO);
         task.start();
-        assertEquals(task.state, TaskState.ONGOING);
+        assertEquals(TaskState.ONGOING, task.state);
         assertFalse(task.start());
     }
 
@@ -110,7 +110,7 @@ class OnetimeTaskTest {
         task.setTaskPond(new TaskPond());
         task.setState(TaskState.ONGOING);
         task.complete();
-        assertEquals(task.state, TaskState.COMPLETED);
+        assertEquals(TaskState.COMPLETED, task.state);
         assertFalse(task.complete());
     }
 
@@ -123,7 +123,7 @@ class OnetimeTaskTest {
     void getDdlTime() {
         LocalDateTime ddlTime = LocalDateTime.now().plusDays(5);
         task.setDdlTime(ddlTime);
-        assertEquals(task.getDdlTime(), ddlTime);
+        assertEquals(ddlTime, task.getDdlTime());
     }
 
     @Test
@@ -133,6 +133,6 @@ class OnetimeTaskTest {
 
     @Test
     void getEndDate() {
-        assertEquals(task.getEndDate(), task.getDdlTime().toLocalDate());
+        assertEquals(task.getDdlTime().toLocalDate(), task.getEndDate());
     }
 }

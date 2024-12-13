@@ -81,15 +81,15 @@ public class TaskPond {
         return new ArrayList<>(tasks);
     }
 
-    public boolean save() {
-        // TODO
-        return false;
-    }
-
-    public boolean load() {
-        // TODO
-        return false;
-    }
+//    public boolean save() {
+//        // TODO
+//        return false;
+//    }
+//
+//    public boolean load() {
+//        // TODO
+//        return false;
+//    }
 
     public void sycTask(Task task) {
         alarmSystem.updateTask(task);
