@@ -4,9 +4,11 @@ import com.github.kyhsdjq.tasklist.data.task.Task;
 import com.github.kyhsdjq.tasklist.ui.CLI;
 
 import java.util.List;
+import java.util.Scanner;
 
 public abstract class TaskEditor {
     protected Task task;
+    protected Scanner scanner = new Scanner(System.in);
 
     public Task getTask() {
         if (task == null)
@@ -29,12 +31,12 @@ public abstract class TaskEditor {
         // name
         askString = "Current name: \"" + task.getName() + "\", would you like to modify it?";
         answers = List.of("y", "n");
-        if (CLI.askForString(askString, answers).equals("y")) {
+        if (CLI.askForString(askString, answers, scanner).equals("y")) {
             result = true;
 
             askString = "What's your task name?";
             answers = null;
-            task.setName(CLI.askForString(askString, answers));
+            task.setName(CLI.askForString(askString, answers, scanner));
         }
         return result;
     }
@@ -46,12 +48,12 @@ public abstract class TaskEditor {
         // note
         askString = "Current note: \"" + task.getNote() + "\", would you like to modify it?";
         answers = List.of("y", "n");
-        if (CLI.askForString(askString, answers).equals("y")) {
+        if (CLI.askForString(askString, answers, scanner).equals("y")) {
             result = true;
 
             askString = "What's your task note?";
             answers = null;
-            task.setNote(CLI.askForString(askString, answers));
+            task.setNote(CLI.askForString(askString, answers, scanner));
         }
         return result;
     }
@@ -63,12 +65,12 @@ public abstract class TaskEditor {
         // tag
         askString = "Current tag: \"" + task.getTag() + "\", would you like to modify it?";
         answers = List.of("y", "n");
-        if (CLI.askForString(askString, answers).equals("y")) {
+        if (CLI.askForString(askString, answers, scanner).equals("y")) {
             result = true;
 
             askString = "What's your task tag?";
             answers = null;
-            task.setTag(CLI.askForString(askString, answers));
+            task.setTag(CLI.askForString(askString, answers, scanner));
         }
         return result;
     }

@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Scanner;
 
 public class CLI {
-    public CLI() {}
-
     /**
      *
      * @param question the question that will be printed
@@ -17,8 +15,10 @@ public class CLI {
      * @return the answer user printed
      */
     public static String askForString(String question, List<String> answers) {
-        Scanner scanner = new Scanner(System.in);
+        return askForString(question, answers, new Scanner(System.in));
+    }
 
+    public static String askForString(String question, List<String> answers, Scanner scanner) {
         String askString = question + " " + (answers != null ? answers : "");
         String warnString = "Please provide one of the acceptable answers: " + (answers != null ? answers : "");
 
@@ -44,7 +44,10 @@ public class CLI {
      * @return the answer user provided
      */
     public static int askForInt(String question) {
-        Scanner scanner = new Scanner(System.in);
+        return askForInt(question, new Scanner(System.in));
+    }
+
+    public static int askForInt(String question, Scanner scanner) {
         int response;
 
         while (true) {
@@ -62,13 +65,17 @@ public class CLI {
     }
 
     public static LocalDateTime askForLocalDateTime() {
+        return askForLocalDateTime(new Scanner(System.in));
+    }
+
+    public static LocalDateTime askForLocalDateTime(Scanner scanner) {
         while (true) {
             try {
-                int year = askForInt("Please enter the year:");
-                int month = askForInt("Please enter the month:");
-                int day = askForInt("Please enter the day:");
-                int hour = askForInt("Please enter the hour:");
-                int minute = askForInt("Please enter the minute:");
+                int year = askForInt("Please enter the year:", scanner);
+                int month = askForInt("Please enter the month:", scanner);
+                int day = askForInt("Please enter the day:", scanner);
+                int hour = askForInt("Please enter the hour:", scanner);
+                int minute = askForInt("Please enter the minute:", scanner);
 
                 return LocalDateTime.of(year, month, day, hour, minute);
             } catch (DateTimeException e) {
@@ -78,11 +85,15 @@ public class CLI {
     }
 
     public static LocalDate askForLocalDate() {
+        return askForLocalDate(new Scanner(System.in));
+    }
+
+    public static LocalDate askForLocalDate(Scanner scanner) {
         while (true) {
             try {
-                int year = askForInt("Please enter the year:");
-                int month = askForInt("Please enter the month:");
-                int day = askForInt("Please enter the day:");
+                int year = askForInt("Please enter the year:", scanner);
+                int month = askForInt("Please enter the month:", scanner);
+                int day = askForInt("Please enter the day:", scanner);
 
                 return LocalDate.of(year, month, day);
             } catch (DateTimeException e) {
@@ -92,11 +103,15 @@ public class CLI {
     }
 
     public static Duration askForDuration() {
+        return askForDuration(new Scanner(System.in));
+    }
+
+    public static Duration askForDuration(Scanner scanner) {
         while (true) {
             try {
-                int days = askForInt("Please enter the number of days:");
-                int hours = askForInt("Please enter the number of hours:");
-                int minutes = askForInt("Please enter the number of minutes:");
+                int days = askForInt("Please enter the number of days:", scanner);
+                int hours = askForInt("Please enter the number of hours:", scanner);
+                int minutes = askForInt("Please enter the number of minutes:", scanner);
 
                 return Duration.ofDays(days).plusHours(hours).plusMinutes(minutes);
             } catch (DateTimeException e) {
