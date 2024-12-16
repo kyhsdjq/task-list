@@ -13,7 +13,7 @@ class AlarmSystem {
 
     private ScheduledFuture<?> scheduledFuture;
 
-    private record AlarmEntry(LocalDateTime time, Task task) {
+    public record AlarmEntry(LocalDateTime time, Task task) {
         @Override
         public String toString() {
             return time + " - " + task.getName();
@@ -79,6 +79,9 @@ class AlarmSystem {
     }
 
     public boolean addTask(Task task) {
+        if (alarmMap.containsKey(task)) {
+            return false;
+        }
         if (task.getState() == TaskState.COMPLETED) {
             return false;
         }
@@ -120,7 +123,6 @@ class AlarmSystem {
             return false;
         }
         else {
-            int index = 0;
             synchronized (alarmList) {
                 alarmList.removeIf(new Predicate<AlarmEntry>() {
                     @Override
@@ -144,15 +146,21 @@ class AlarmSystem {
     }
 
     public boolean updateTask(Task task) {
+        if (!alarmMap.containsKey(task))
+            return false;
+
         List<LocalDateTime> prevAlarmTimes = new ArrayList<>();
         for (AlarmEntry alarmEntry: alarmMap.getOrDefault(task, new ArrayList<>())) {
             prevAlarmTimes.add(alarmEntry.time());
         }
-        boolean result = prevAlarmTimes.equals(task.getAlarmTimes());
+        boolean result = !prevAlarmTimes.equals(task.getAlarmTimes());
 
-        removeTask(task);
-        addTask(task);
-        resetScheduledFuture();
+        if (result) {
+            removeTask(task);
+            addTask(task);
+            resetScheduledFuture();
+        }
+
         return result;
     }
 
@@ -172,5 +180,13 @@ class AlarmSystem {
             result = alarmList.toString();
         }
         return result;
+    }
+
+    public List<AlarmEntry> getAlarmList() {
+        return alarmList;
+    }
+
+    public Map<Task, List<AlarmEntry>> getAlarmMap() {
+        return alarmMap;
     }
 }
