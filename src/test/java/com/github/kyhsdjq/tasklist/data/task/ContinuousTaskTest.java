@@ -9,6 +9,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 class ContinuousTaskTest {
 
@@ -82,9 +84,11 @@ class ContinuousTaskTest {
         task.setNextAlarmTime(now);
         task.checkIn();
         assertEquals(now.plusDays(1), task.getNextAlarmTime());
-        task.setTaskPond(new TaskPond());
+        TaskPond taskPond = mock(TaskPond.class);
+        task.setTaskPond(taskPond);
         task.checkIn();
         assertEquals(now.plusDays(2), task.getNextAlarmTime());
+        verify(taskPond).sycTask(task);
     }
 
     @Test

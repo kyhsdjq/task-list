@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 class OnetimeTaskTest {
 
@@ -75,11 +76,13 @@ class OnetimeTaskTest {
         assertEquals(task.getDdlTime().minus(duration), task.getAlarmTimes().get(0));
 
         // test task pond
-        task.setTaskPond(new TaskPond());
+        TaskPond taskPond = mock(TaskPond.class);
+        task.setTaskPond(taskPond);
         duration = Duration.ofDays(2);
         task.addAlarmTime(duration);
         assertEquals(2, task.getAlarmTimes().size());
         assertEquals(task.getDdlTime().minus(duration), task.getAlarmTimes().get(0));
+        verify(taskPond).sycTask(task);
     }
 
     @Test
@@ -91,27 +94,33 @@ class OnetimeTaskTest {
         task.addAlarmTime(Duration.ofDays(3));
         task.addAlarmTime(Duration.ofDays(4));
         assertTrue(task.removeAlarmTime(Duration.ofDays(1)));
-        task.setTaskPond(new TaskPond());
+        TaskPond taskPond = mock(TaskPond.class);
+        task.setTaskPond(taskPond);
         assertTrue(task.removeAlarmTime(Duration.ofDays(2)));
         assertFalse(task.removeAlarmTime(Duration.ofMinutes(1)));
+        verify(taskPond).sycTask(task);
     }
 
     @Test
     void start() {
-        task.setTaskPond(new TaskPond());
+        TaskPond taskPond = mock(TaskPond.class);
+        task.setTaskPond(taskPond);
         task.setState(TaskState.TODO);
         task.start();
         assertEquals(TaskState.ONGOING, task.state);
         assertFalse(task.start());
+        verify(taskPond).sycTask(task);
     }
 
     @Test
     void complete() {
-        task.setTaskPond(new TaskPond());
+        TaskPond taskPond = mock(TaskPond.class);
+        task.setTaskPond(taskPond);
         task.setState(TaskState.ONGOING);
         task.complete();
         assertEquals(TaskState.COMPLETED, task.state);
         assertFalse(task.complete());
+        verify(taskPond, times(2)).sycTask(task);
     }
 
     @Test
