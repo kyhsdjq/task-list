@@ -36,10 +36,10 @@ public class ContinuousTaskEditor extends TaskEditor {
         // ddlTime
         askString = "Current start date: \"" + task.getStartDate() + "\", would you like to modify it?";
         answers = List.of("y", "n");
-        if (CLI.askForString(askString, answers).equals("y")) {
+        if (CLI.askForString(askString, answers, scanner).equals("y")) {
             result = true;
 
-            task.setStartDate(CLI.askForLocalDate());
+            task.setStartDate(CLI.askForLocalDate(scanner));
         }
         return result;
     }
@@ -51,10 +51,10 @@ public class ContinuousTaskEditor extends TaskEditor {
         // ddlTime
         askString = "Current end date: \"" + task.getEndDate() + "\", would you like to modify it?";
         answers = List.of("y", "n");
-        if (CLI.askForString(askString, answers).equals("y")) {
+        if (CLI.askForString(askString, answers, scanner).equals("y")) {
             result = true;
 
-            task.setEndDate(CLI.askForLocalDate());
+            task.setEndDate(CLI.askForLocalDate(scanner));
         }
         return result;
     }
@@ -66,12 +66,12 @@ public class ContinuousTaskEditor extends TaskEditor {
         // ddlTime
         askString = "Current next alarm time: \"" + task.getNextAlarmTime() + "\", would you like to modify it?";
         answers = List.of("y", "n");
-        if (CLI.askForString(askString, answers).equals("y")) {
+        if (CLI.askForString(askString, answers, scanner).equals("y")) {
             result = true;
 
             LocalDateTime nextAlarmTime;
             while (true) {
-                nextAlarmTime = CLI.askForLocalDateTime();
+                nextAlarmTime = CLI.askForLocalDateTime(scanner);
                 if (nextAlarmTime.toLocalDate().isBefore(task.getStartDate())
                     || nextAlarmTime.toLocalDate().isAfter(task.getEndDate())) {
                     System.out.println("Please input time between " + task.getStartDate() + " and " + task.getEndDate());

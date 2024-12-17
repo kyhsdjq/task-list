@@ -37,13 +37,13 @@ public class OnetimeTaskEditor extends TaskEditor {
         // state
         askString = "Current state: \"" + task.getState() + "\", would you like to modify it?";
         answers = List.of("y", "n");
-        if (CLI.askForString(askString, answers).equals("y")) {
+        if (CLI.askForString(askString, answers, scanner).equals("y")) {
             result = true;
 
             askString = "What's your task state?";
             answers = List.of("TODO", "ONGOING", "COMPLETED");
 
-            String stateString = CLI.askForString(askString, answers);
+            String stateString = CLI.askForString(askString, answers, scanner);
             if (stateString.equals("TODO"))
                 task.setState(TaskState.TODO);
             else if (stateString.equals("ONGOING"))
@@ -61,10 +61,10 @@ public class OnetimeTaskEditor extends TaskEditor {
         // ddlTime
         askString = "Current ddl time: \"" + task.getDdlTime() + "\", would you like to modify it?";
         answers = List.of("y", "n");
-        if (CLI.askForString(askString, answers).equals("y")) {
+        if (CLI.askForString(askString, answers, scanner).equals("y")) {
             result = true;
 
-            task.setDdlTime(CLI.askForLocalDateTime());
+            task.setDdlTime(CLI.askForLocalDateTime(scanner));
         }
         return result;
     }
@@ -99,13 +99,13 @@ public class OnetimeTaskEditor extends TaskEditor {
 
                 askString = "Would you like to remove any of them?";
                 answers = List.of("y", "n");
-                if (CLI.askForString(askString, answers).equals("y")) {
+                if (CLI.askForString(askString, answers, scanner).equals("y")) {
                     result = true;
                     int index;
 
                     askString = "Input index of the alarm time you want to remove.";
                     while (true) {
-                        index = CLI.askForInt(askString);
+                        index = CLI.askForInt(askString, scanner);
                         if (index >= 0 && index < task.getAlarmTimes().size())
                             break;
                         System.out.println("Please input number between 0 and " + (task.getAlarmTimes().size() - 1) + ".");
@@ -121,12 +121,12 @@ public class OnetimeTaskEditor extends TaskEditor {
 
             askString = "Would you like to add alarm time?";
             answers = List.of("y", "n");
-            if (CLI.askForString(askString, answers).equals("y")) {
+            if (CLI.askForString(askString, answers, scanner).equals("y")) {
                 result = true;
 
                 System.out.println("Input how long your alarm time is ahead of ddl time.");
 
-                task.addAlarmTime(CLI.askForDuration());
+                task.addAlarmTime(CLI.askForDuration(scanner));
                 breakFlag = false;
             }
 

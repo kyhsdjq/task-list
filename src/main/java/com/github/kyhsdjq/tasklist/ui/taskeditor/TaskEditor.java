@@ -16,6 +16,10 @@ public abstract class TaskEditor {
         return task;
     }
 
+    public void setScanner(Scanner scanner) {
+        this.scanner = scanner;
+    }
+
     protected boolean setCommonProperties() {
         boolean result = false;
         result = setName() || result;
