@@ -2,6 +2,7 @@ package com.github.kyhsdjq.tasklist.ui.window;
 
 import com.github.kyhsdjq.tasklist.data.TaskPond;
 import com.github.kyhsdjq.tasklist.ui.CLI;
+import com.github.kyhsdjq.tasklist.ui.TaskFactory;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -48,5 +49,11 @@ public class TimelineWindow extends TaskWindow {
                     break;
             }
         }
+    }
+
+    public static void main(String[] args) {
+        TimelineWindow timelineWindow = new TimelineWindow();
+        TaskPond taskPond = new TaskPond();
+        timelineWindow.windowLoop(taskPond);
     }
 }

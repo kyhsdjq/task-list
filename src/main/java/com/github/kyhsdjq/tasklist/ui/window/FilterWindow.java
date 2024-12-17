@@ -102,4 +102,10 @@ public class FilterWindow extends TaskWindow {
             }
         }
     }
+
+    public static void main(String[] args) {
+        FilterWindow filterWindow = new FilterWindow();
+        TaskPond taskPond = new TaskPond();
+        filterWindow.windowLoop(taskPond);
+    }
 }
