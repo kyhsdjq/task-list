@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -156,5 +158,47 @@ class AlarmSystemTest {
         catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    void addAllTasks() {
+        LocalDateTime now = LocalDateTime.now();
+        OnetimeTask task = new OnetimeTask();
+        task.setDdlTime(now.plusDays(5));
+        task.addAlarmTime(Duration.ofDays(1));
+        task.addAlarmTime(Duration.ofDays(2));
+        ContinuousTask task2 = new ContinuousTask();
+        task2.setName("task2");
+        task2.setEndDate(now.toLocalDate().plusDays(5));
+        task2.setNextAlarmTime(now.plusDays(3).minusMinutes(1));
+
+        List<Task> tasks = new ArrayList<>();
+        tasks.add(task);
+        tasks.add(task2);
+
+        assertTrue(alarmSystem.addAllTasks(tasks));
+    }
+
+    @Test
+    void removeAllTasks() {
+
+        LocalDateTime now = LocalDateTime.now();
+        OnetimeTask task = new OnetimeTask();
+        task.setDdlTime(now.plusDays(5));
+        task.addAlarmTime(Duration.ofDays(1));
+        task.addAlarmTime(Duration.ofDays(2));
+        assertTrue(alarmSystem.addTask(task));
+        ContinuousTask task2 = new ContinuousTask();
+        task2.setName("task2");
+        task2.setEndDate(now.toLocalDate().plusDays(5));
+        task2.setNextAlarmTime(now.plusDays(3).minusMinutes(1));
+        assertTrue(alarmSystem.addTask(task2));
+        assertEquals(5, alarmSystem.getAlarmList().size());
+
+        List<Task> tasks = new ArrayList<>();
+        tasks.add(task);
+        tasks.add(task2);
+
+        assertTrue(alarmSystem.removeAllTasks(tasks));
     }
 }
