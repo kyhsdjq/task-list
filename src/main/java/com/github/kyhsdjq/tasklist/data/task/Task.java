@@ -54,7 +54,7 @@ public abstract class Task {
     }
 
     public void setTaskPond(TaskPond taskPond) {
-        if (this.taskPond != null) {
+        if (this.taskPond != null && taskPond != null) {
             this.taskPond.removeTask(this);
         }
         this.taskPond = taskPond;
