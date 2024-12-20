@@ -1,10 +1,14 @@
 package com.github.kyhsdjq.tasklist.data.task;
 
+import com.code_intelligence.jazzer.api.FuzzedDataProvider;
+import com.code_intelligence.jazzer.junit.FuzzTest;
 import com.github.kyhsdjq.tasklist.data.TaskPond;
 import org.junit.jupiter.api.Test;
 
+import java.time.DateTimeException;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.chrono.ChronoLocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -61,6 +65,31 @@ class OnetimeTaskTest {
             assertEquals(i, task.getAlarmTimes().size());
             for (int j = 0; j < i; j ++)
                 assertEquals(now.plusMinutes(j + 1), task.getAlarmTimes().get(j));
+        }
+    }
+
+    private static LocalDateTime getRandomLDT(FuzzedDataProvider data) {
+        while (true) {
+            try {
+                int year = data.consumeInt(-999999999, 999999999);
+                int month = data.consumeInt(1, 12);
+                int day = data.consumeInt(1, 31);
+                int hour = data.consumeInt(0, 23);
+                int minute = data.consumeInt(0, 59);
+
+                return LocalDateTime.of(year, month, day, hour, minute);
+            } catch (DateTimeException e) {
+                continue;
+            }
+        }
+    }
+
+    @FuzzTest
+    void getAlarmTimesFuzz(FuzzedDataProvider data) {
+        task.setDdlTime(getRandomLDT(data));
+        for (int i = 0; i < 1000; i ++) {
+            task.addAlarmTime(getRandomLDT(data));
+            assert(checkOrderliness(task.getAlarmTimes()));
         }
     }
 

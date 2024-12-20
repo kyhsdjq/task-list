@@ -1,6 +1,6 @@
 <component name="libraryTable">
   <library name="mockito.core" type="repository">
-    <properties maven-id="org.mockito:mockito-core:5.14.2" />
+    <properties maven-id="org.mockito:mockito-core:RELEASE" />
     <CLASSES>
       <root url="jar://$MAVEN_REPOSITORY$/org/mockito/mockito-core/5.14.2/mockito-core-5.14.2.jar!/" />
       <root url="jar://$MAVEN_REPOSITORY$/net/bytebuddy/byte-buddy/1.15.4/byte-buddy-1.15.4.jar!/" />
