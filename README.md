@@ -34,9 +34,9 @@
 
 - [需求分析](https://github.com/kyhsdjq/task-list/blob/main/doc/request.pdf)
 
-- [软件实现与构建](https://github.com/kyhsdjq/task-list/blob/main/doc/implementation.pdf)
-
 - [软件设计与建模](https://github.com/kyhsdjq/task-list/blob/main/doc/design.pdf)
+
+- [软件实现与构建](https://github.com/kyhsdjq/task-list/blob/main/doc/implementation.pdf)
 
 - [软件分析](https://github.com/kyhsdjq/task-list/blob/main/doc/analysis.pdf)
 
