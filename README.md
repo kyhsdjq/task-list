@@ -8,7 +8,7 @@
 
 - 技术亮点:
 
-    - 开发方式: git管理开发过程, 瀑布流模型(需求定义$\rightarrow$需求分析$\rightarrow$软件设计$\rightarrow$程序实现$\rightarrow$软件测试)
+    - 开发方式: git管理开发过程, 瀑布流模型(需求定义 $\rightarrow$ 需求分析 $\rightarrow$ 软件设计 $\rightarrow$ 程序实现 $\rightarrow$ 软件测试)
 
     - 设计模式: 访问者模式,工厂模式
 
